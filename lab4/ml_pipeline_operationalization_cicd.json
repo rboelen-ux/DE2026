@@ -1,0 +1,56 @@
+{
+  "steps": [
+    {
+      "name": "python:3.12.7",
+      "entrypoint": "/bin/sh",
+      "args": [
+        "-c",
+        "cd ./lab4/ml-pipeline && python -m venv .myenv && . .myenv/bin/activate && python -m pip install --upgrade pip && python -m pip install -r requirements.txt && python dt_lr_train_pipeline.py --target_file=diabetes_predictor_dt_lr_pipeline.yaml"
+      ],
+      "id": "compile-pipeline"
+    },
+    {
+      "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
+      "entrypoint": "gcloud",
+      "args": [
+        "storage",
+        "cp",
+        "./lab4/ml-pipeline/diabetes_predictor_dt_lr_pipeline.yaml",
+        "gs://${_CONF_REPO}/diabetes_predictor_dt_lr_pipeline.yaml"
+      ],
+      "waitFor": [
+        "compile-pipeline"
+      ],
+      "id": "upload-pipeline"
+    },
+    {
+      "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
+	  "entrypoint": "gcloud",
+      "args": [
+        "storage",
+        "cp",
+        "gs://${_CONF_REPO}/parameters.json",
+        "."
+      ],
+      "waitFor": [
+        "upload-pipeline"
+      ],
+      "id": "parameter-download"
+    },
+    {
+      "name": "${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/pipeline-executor:0.0.1",
+      "args": [
+        "--name=diabetes-predictor-pipeline",
+        "--pipeline_def=./lab4/ml-pipeline/diabetes_predictor_dt_lr_pipeline.yaml",
+        "--pipeline_root=gs://${_TEMP_REPO}",
+        "--parameter_dict=./parameters.json"
+      ],
+      "waitFor": [
+        "parameter-download"
+      ]
+    }
+  ],
+  "options": {
+    "logging": "CLOUD_LOGGING_ONLY"
+  }
+}

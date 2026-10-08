@@ -6,7 +6,7 @@
       "args": [
         "storage",
         "cp",
-        "gs://${_MODEL_REPO}/model_lr.pkl",
+        "gs://${_MODEL_REPO}/lr/lr_model.pkl",
         "./lab2/prediction-api-lr/testResources/model.pkl"     
       ]
     },	    
@@ -24,7 +24,7 @@
       "args": [
         "storage",
         "cp",
-        "gs://${_MODEL_REPO}/model_lr.pkl",
+        "gs://${_MODEL_REPO}/lr/lr_model.pkl",
         "./lab2/prediction-api-lr/model.pkl"     
       ]
     },	
