@@ -12,6 +12,8 @@ sudo docker start prediction-ui
 
 sudo docker logs prediction-ui
 
+LLLLLLL
+
 # Log in to a container
 
 sudo docker exec -it prediction-ui /bin/bash
