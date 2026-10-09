@@ -11,7 +11,8 @@ sudo docker run -p  5000:5000 -d --name=prediction-ui indikakumara/prediction-ui
 sudo docker start prediction-ui
 
 sudo docker logs prediction-ui
-dddd
+
+adsfsdf
 
 # Log in to a container
 
