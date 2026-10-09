@@ -24,7 +24,6 @@ sudo docker rm $(sudo docker ps -a -q)
 
 sudo docker ps -as
 
-HHHHHHH
 
 
 # Remove all Docker networks and volumes
